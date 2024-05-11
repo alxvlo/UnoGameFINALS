@@ -3,43 +3,74 @@
 #include <string.h>
 #include <time.h>
 
-#define MAX_PLAYERS 4
+#ifdef _WIN32
+#define CLEAR_SCREEN system("cls")
+#else
+#define CLEAR_SCREEN system("clear")
+#endif
+
 #define MAX_CARDS 108
 #define MAX_HAND_SIZE 20
+#define MAX_PLAYERS 4
+#define NUM_COLORS 4
+#define NUM_VALUES 15
 
 typedef struct {
     char color[10];
-    char number[3]; // Including NULL terminator
+    char number[15];
 } Card;
 
 typedef struct {
     char name[20];
     Card hand[MAX_HAND_SIZE];
     int hand_size;
+    int isHuman;
 } Player;
 
-// Function to initialize the deck
+// Function Prototypes
+void initializeDeck(Card* deck);
+void shuffleDeck(Card* deck);
+void initializePlayers(Player* players, int numPlayers);
+void dealInitialCards(Player* players, int numPlayers, Card* deck, int* deckIndex);
+void printHand(Player player);
+int canPlay(Card topCard, Card handCard);
+void playGame(Player* players, int numPlayers, Card* deck);
+void pressEnterToContinue();
+void displayInstructions();
+Card drawCard(Card* deck, int* deckIndex);
+int handleSpecialCard(Card* topCard, Player* players, int currentPlayer, int* direction, int numPlayers, Card* deck, int* deckIndex);
+
 void initializeDeck(Card* deck) {
     char* colors[] = {"Red", "Yellow", "Green", "Blue"};
     char* numbers[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Skip", "Reverse", "Draw Two", "Wild", "Wild Draw Four"};
-    int i, j, k = 0;
+    int i, j, k = 0, count;
 
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 10; j++) {
-            strcpy(deck[k].color, colors[i]);
-            strcpy(deck[k].number, numbers[j]);
-            k++;
+    for (i = 0; i < NUM_COLORS; i++) {
+        for (j = 0; j < 13; j++) {
+            count = (j == 0) ? 1 : 2;
+            while (count--) {
+                strcpy(deck[k].color, colors[i]);
+                strcpy(deck[k].number, numbers[j]);
+                k++;
+            }
         }
-        for (j = 10; j < 15; j++) {
-            strcpy(deck[k].color, colors[i]);
+    }
+
+    for (j = 13; j < NUM_VALUES; j++) {
+        count = 4;
+        while (count--) {
+            strcpy(deck[k].color, "Black");
             strcpy(deck[k].number, numbers[j]);
             k++;
         }
     }
 
-    // Shuffling the deck
+    shuffleDeck(deck);
+}
+
+void shuffleDeck(Card* deck) {
     srand(time(NULL));
-    for (i = 0; i < MAX_CARDS; i++) {
+    for (int i = 0; i < MAX_CARDS; i++) {
         int r = rand() % MAX_CARDS;
         Card temp = deck[i];
         deck[i] = deck[r];
@@ -47,176 +78,197 @@ void initializeDeck(Card* deck) {
     }
 }
 
-// Function to initialize players
 void initializePlayers(Player* players, int numPlayers) {
-    int i;
-    for (i = 0; i < numPlayers; i++) {
+    for (int i = 0; i < numPlayers; i++) {
         sprintf(players[i].name, "Player %d", i + 1);
         players[i].hand_size = 0;
+        players[i].isHuman = (i == 0) ? 1 : 0;
     }
 }
 
-// Function to deal initial cards to players
 void dealInitialCards(Player* players, int numPlayers, Card* deck, int* deckIndex) {
-    int i, j;
-    for (i = 0; i < numPlayers; i++) {
-        for (j = 0; j < 7; j++) {
-            players[i].hand[j] = deck[*deckIndex];
-            (*deckIndex)++;
+    for (int i = 0; i < numPlayers; i++) {
+        for (int j = 0; j < 7; j++) {
+            players[i].hand[players[i].hand_size++] = deck[(*deckIndex)++];
         }
-        players[i].hand_size = 7;
     }
 }
 
-// Function to print player's hand
-void printHand(Player player, int isPlayer) {
-    int i;
-    printf("%s's Hand: ", player.name);
-    if (isPlayer) {
-        for (i = 0; i < player.hand_size; i++) {
-            printf("[%s %s | %s], ", player.hand[i].color, player.hand[i].number, player.hand[i].color);
-        }
-    } else {
-        printf("[ %d LEFT]", player.hand_size);
+void printHand(Player player) {
+    printf("%s's Hand (%d cards): ", player.name, player.hand_size);
+    for (int i = 0; i < player.hand_size; i++) {
+        printf("[%s %s] ", player.hand[i].color, player.hand[i].number);
     }
     printf("\n");
 }
 
-// Function to start the game
-void startGame(Player* players, int numPlayers, Card* deck) {
-    int deckIndex = 0;
-    initializePlayers(players, numPlayers);
-    dealInitialCards(players, numPlayers, deck, &deckIndex);
-}
-
-// Function to display instructions
-void displayInstructions() {
-    printf("=== INSTRUCTIONS ===\n");
-    printf("Uno is a card game where the objective is to be the first player to get rid of all your cards.\n");
-    printf("Each player is dealt 7 cards at the beginning of the game.\n");
-    printf("Players take turns to play a card from their hand that matches either the color or the number of the top card on the discard pile.\n");
-    printf("If a player doesn't have a matching card, they must draw a card from the draw pile. If that card can be played, they may play it immediately.\n");
-    printf("Special cards:\n");
-    printf("    - Skip: Skips the next player's turn.\n");
-    printf("    - Reverse: Reverses the direction of play.\n");
-    printf("    - Draw Two: Forces the next player to draw two cards and skips their turn.\n");
-    printf("    - Wild: Can be played on any card, and the player can choose the color to continue.\n");
-    printf("    - Wild Draw Four: Can be played on any card, the player can choose the color to continue, and the next player must draw four cards and skip their turn.\n");
-    printf("The first player to get rid of all their cards wins the game!\n");
-}
-
-// Function to determine if a card can be played
 int canPlay(Card topCard, Card handCard) {
-    // Wild cards can always be played
-    if (strcmp(handCard.number, "Wild") == 0 || strcmp(handCard.number, "Wild Draw Four") == 0) {
-        return 1;
-    }
-    // Cards with matching color, number, or symbol can be played
-    if (strcmp(topCard.color, handCard.color) == 0 || strcmp(topCard.number, handCard.number) == 0) {
-        return 1;
-    }
-    return 0;
+    return (strcmp(topCard.color, handCard.color) == 0 || strcmp(topCard.number, handCard.number) == 0 ||
+            strcmp(handCard.number, "Wild") == 0 || strcmp(handCard.number, "Wild Draw Four") == 0);
 }
 
-// Function to simulate gameplay
+Card drawCard(Card* deck, int* deckIndex) {
+    if (*deckIndex < MAX_CARDS) {
+        return deck[(*deckIndex)++];
+    } else {
+        Card emptyCard = {"None", "None"};
+        return emptyCard;
+    }
+}
+
+int handleSpecialCard(Card* topCard, Player* players, int currentPlayer, int* direction, int numPlayers, Card* deck, int* deckIndex) {
+    int nextPlayer = (currentPlayer + *direction + numPlayers) % numPlayers;
+    if (strcmp(topCard->number, "Skip") == 0) {
+        nextPlayer = (nextPlayer + *direction + numPlayers) % numPlayers;
+    } else if (strcmp(topCard->number, "Reverse") == 0) {
+        *direction *= -1;
+        nextPlayer = (currentPlayer + *direction + numPlayers) % numPlayers;
+    } else if (strcmp(topCard->number, "Draw Two") == 0) {
+        for (int i = 0; i < 2; i++) {
+            players[nextPlayer].hand[players[nextPlayer].hand_size++] = drawCard(deck, deckIndex);
+        }
+    } else if (strcmp(topCard->number, "Wild Draw Four") == 0) {
+        for (int i = 0; i < 4; i++) {
+            players[nextPlayer].hand[players[nextPlayer].hand_size++] = drawCard(deck, deckIndex);
+        }
+    }
+    if (strcmp(topCard->number, "Wild") == 0 || strcmp(topCard->number, "Wild Draw Four") == 0) {
+        if (players[currentPlayer].isHuman) {
+            printf("Choose a color (Red, Yellow, Green, Blue): ");
+            scanf("%9s", topCard->color);  // Use %9s to avoid buffer overflow
+        } else {
+            strcpy(topCard->color, "Red"); // Simple AI always chooses Red
+        }
+    }
+    return nextPlayer;
+}
+
 void playGame(Player* players, int numPlayers, Card* deck) {
-    int currentPlayer = rand() % numPlayers;
-    printf("=== GAME START ===\\n");
-    printf("Play Order:\\n");
-    for (int i = 0; i < numPlayers; i++) {
-        printf("%s ", players[(currentPlayer + i) % numPlayers].name);
-    }
-    printf("\\n\\n");
+    int currentPlayer = 0;
+    int deckIndex = 0;
+    int direction = 1;  // 1 for clockwise, -1 for counterclockwise
+    int gameOver = 0;
+    Card topCard = deck[deckIndex++];  // Start the game with the first card from the deck
 
-    Card topCard = deck[0];
-    printf("Top Card: [%s %s]\\n\\n", topCard.color, topCard.number);
-
-    for (int i = 0; i < MAX_CARDS - 1; i++) {
-        deck[i] = deck[i + 1];
-    }
-
-    int deckIndex = 1;
     dealInitialCards(players, numPlayers, deck, &deckIndex);
 
-    for (int i = 0; i < numPlayers; i++) {
-        printHand(players[i], i == 0);
-    }
-
-    int gameOver = 0;
     while (!gameOver) {
-        printf("\\n%s's turn:\\n", players[currentPlayer].name);
-        int playable = 0;
-        for (int i = 0; i < players[currentPlayer].hand_size; i++) {
-            if (canPlay(topCard, players[currentPlayer].hand[i])) {
-                printf("Playing [%s %s]\\n", players[currentPlayer].hand[i].color, players[currentPlayer].hand[i].number);
-                topCard = players[currentPlayer].hand[i];
-                for (int j = i; j < players[currentPlayer].hand_size - 1; j++) {
-                    players[currentPlayer].hand[j] = players[currentPlayer].hand[j + 1];
+        CLEAR_SCREEN;
+        printf("Current Top Card: [%s %s]\n\n", topCard.color, topCard.number);
+        for (int i = 0; i < numPlayers; i++) {
+            printHand(players[i]);
+        }
+
+        if (players[currentPlayer].isHuman) {
+            printf("Your turn, %s:\n", players[currentPlayer].name);
+            printHand(players[currentPlayer]);
+
+            int played = 0;
+            while (!played) {
+                printf("Enter the index of the card to play (1-%d) or 0 to draw a card: ", players[currentPlayer].hand_size);
+                int choice;
+                scanf("%d", &choice);
+
+                if (choice == 0) {
+                    Card newCard = drawCard(deck, &deckIndex);
+                    if (strcmp(newCard.color, "None") != 0) {  // Check if the deck is not empty
+                        players[currentPlayer].hand[players[currentPlayer].hand_size++] = newCard;
+                        printf("Drew: [%s %s]\n", newCard.color, newCard.number);
+                        if (canPlay(topCard, newCard)) {
+                            printf("You can play the drawn card. Do you want to play it? (1 for yes, 0 for no): ");
+                            int playDrawn;
+                            scanf("%d", &playDrawn);
+                            if (playDrawn) {
+                                topCard = newCard;
+                                players[currentPlayer].hand_size--;  // Remove the last card which was just played
+                                played = 1;
+                            }
+                        }
+                    } else {
+                        printf("No more cards in the deck.\n");
+                    }
+                } else if (choice > 0 && choice <= players[currentPlayer].hand_size) {
+                    Card chosenCard = players[currentPlayer].hand[choice - 1];  // Adjust index for 0-based array
+                    if (canPlay(topCard, chosenCard)) {
+                        topCard = chosenCard;
+                        for (int i = choice - 1; i < players[currentPlayer].hand_size - 1; i++) {
+                            players[currentPlayer].hand[i] = players[currentPlayer].hand[i + 1];
+                        }
+                        players[currentPlayer].hand_size--;
+                        played = 1;
+                    } else {
+                        printf("Cannot play that card. Please try again.\n");
+                    }
+                } else {
+                    printf("Invalid choice. Please try again.\n");
                 }
-                players[currentPlayer].hand_size--;
-                playable = 1;
-                break;
+            }
+        } else {  // AI turn
+            int played = 0;
+            for (int i = 0; i < players[currentPlayer].hand_size && !played; i++) {
+                if (canPlay(topCard, players[currentPlayer].hand[i])) {
+                    topCard = players[currentPlayer].hand[i];
+                    for (int j = i; j < players[currentPlayer].hand_size - 1; j++) {
+                        players[currentPlayer].hand[j] = players[currentPlayer].hand[j + 1];
+                    }
+                    players[currentPlayer].hand_size--;
+                    played = 1;
+                }
+            }
+            if (!played) {
+                Card newCard = drawCard(deck, &deckIndex);
+                if (strcmp(newCard.color, "None") != 0) {  // Check if the deck is not empty
+                    players[currentPlayer].hand[players[currentPlayer].hand_size++] = newCard;
+                    if (canPlay(topCard, newCard)) {
+                        topCard = newCard;
+                        players[currentPlayer].hand_size--;  // Remove the last card which was just played
+                        played = 1;
+                    }
+                } else {
+                    printf("AI Player %d cannot play and no more cards to draw.\n", currentPlayer + 1);
+                }
             }
         }
-        if (!playable) {
-            if (deckIndex < MAX_CARDS) {
-                players[currentPlayer].hand[players[currentPlayer].hand_size++] = deck[deckIndex++];
-                printf("Drawing a card\\n");
-            } else {
-                printf("No cards left in deck!\\n");
-            }
-        }
+
+        // Move to the next player according to the current direction
+        currentPlayer = handleSpecialCard(&topCard, players, currentPlayer, &direction, numPlayers, deck, &deckIndex);
+
+        // Check if current player has won
         if (players[currentPlayer].hand_size == 0) {
-            printf("%s wins!\\n", players[currentPlayer].name);
+            printf("%s wins the game!\n", players[currentPlayer].name);
             gameOver = 1;
         }
-        currentPlayer = (currentPlayer + 1) % numPlayers;
+        pressEnterToContinue();
     }
 }
 
+void pressEnterToContinue() {
+    printf("Press Enter to continue...\n");
+    while (getchar() != '\n');  // Clear the input buffer
+}
+
+void displayInstructions() {
+    printf("Welcome to UNO! Play cards matching the top card's color or number. Special cards change the game flow.\n");
+}
 
 int main() {
     Card deck[MAX_CARDS];
     Player players[MAX_PLAYERS];
-    int numPlayers, choice;
-    char playerName[20];
-    
+    int numPlayers;
+
     printf("=== WELCOME TO UNO ===\n");
-    printf("Enter your name: ");
-    scanf("%s", playerName);
-    
-    while (1) {
-        printf("\nMAIN MENU:\n");
-        printf("1. Start\n");
-        printf("2. Instructions\n");
-        printf("3. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        
-        switch (choice) {
-            case 1:
-                printf("How many bots do you want to play against? (1 to 3): ");
-                scanf("%d", &numPlayers);
-                
-                if (numPlayers < 0 || numPlayers > 3) {
-                    printf("Invalid number of players.\n");
-                    break;
-                }
-                
-                initializeDeck(deck);
-                startGame(players, numPlayers + 1, deck);
-                playGame(players, numPlayers + 1, deck);
-                break;
-            case 2:
-                displayInstructions();
-                break;
-            case 3:
-                printf("Exiting the game.\n");
-                return 0;
-            default:
-                printf("Invalid choice. Please enter a number between 1 and 3.\n");
-        }
+    printf("Enter the number of players (2 to 4): ");
+    scanf("%d", &numPlayers);
+    getchar();  // Consume newline character after number input
+
+    if (numPlayers < 2 || numPlayers > 4) {
+        printf("Invalid number of players. Game supports 2 to 4 players only.\n");
+        return 0;
     }
 
+    initializePlayers(players, numPlayers);
+    initializeDeck(deck);
+    displayInstructions();
+    playGame(players, numPlayers, deck);
     return 0;
 }
