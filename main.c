@@ -121,35 +121,59 @@ int canPlay(Card topCard, Card handCard) {
 // Function to simulate gameplay
 void playGame(Player* players, int numPlayers, Card* deck) {
     int currentPlayer = rand() % numPlayers;
-    printf("=== GAME START ===\n");
-    printf("Play Order:\n");
+    printf("=== GAME START ===\\n");
+    printf("Play Order:\\n");
     for (int i = 0; i < numPlayers; i++) {
         printf("%s ", players[(currentPlayer + i) % numPlayers].name);
     }
-    printf("\n\n");
-    // Draw top card
+    printf("\\n\\n");
+
     Card topCard = deck[0];
-    printf("Top Card: [%s %s]\n\n", topCard.color, topCard.number);
-    // Remove top card from deck
+    printf("Top Card: [%s %s]\\n\\n", topCard.color, topCard.number);
+
     for (int i = 0; i < MAX_CARDS - 1; i++) {
         deck[i] = deck[i + 1];
     }
-    // Deal initial cards
-    dealInitialCards(players, numPlayers, deck, &numPlayers);
-    // Print initial hands
+
+    int deckIndex = 1;
+    dealInitialCards(players, numPlayers, deck, &deckIndex);
+
     for (int i = 0; i < numPlayers; i++) {
         printHand(players[i], i == 0);
     }
-    // Game loop
-    while (1) {
-        // Player's turn
-        printf("\n%s's turn:\n", players[currentPlayer].name);
-        // Player selects a card to play or draws from the deck
-        // Game logic goes here
-        // For now, let's break out of the loop after one iteration
-        break;
+
+    int gameOver = 0;
+    while (!gameOver) {
+        printf("\\n%s's turn:\\n", players[currentPlayer].name);
+        int playable = 0;
+        for (int i = 0; i < players[currentPlayer].hand_size; i++) {
+            if (canPlay(topCard, players[currentPlayer].hand[i])) {
+                printf("Playing [%s %s]\\n", players[currentPlayer].hand[i].color, players[currentPlayer].hand[i].number);
+                topCard = players[currentPlayer].hand[i];
+                for (int j = i; j < players[currentPlayer].hand_size - 1; j++) {
+                    players[currentPlayer].hand[j] = players[currentPlayer].hand[j + 1];
+                }
+                players[currentPlayer].hand_size--;
+                playable = 1;
+                break;
+            }
+        }
+        if (!playable) {
+            if (deckIndex < MAX_CARDS) {
+                players[currentPlayer].hand[players[currentPlayer].hand_size++] = deck[deckIndex++];
+                printf("Drawing a card\\n");
+            } else {
+                printf("No cards left in deck!\\n");
+            }
+        }
+        if (players[currentPlayer].hand_size == 0) {
+            printf("%s wins!\\n", players[currentPlayer].name);
+            gameOver = 1;
+        }
+        currentPlayer = (currentPlayer + 1) % numPlayers;
     }
 }
+
 
 int main() {
     Card deck[MAX_CARDS];
