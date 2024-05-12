@@ -15,9 +15,17 @@
 #define NUM_COLORS 4
 #define NUM_VALUES 15
 
+// ANSI color codes
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 typedef struct {
     char color[10];
     char number[15];
+    char* colorCode;
 } Card;
 
 typedef struct {
@@ -44,6 +52,7 @@ void showInstructions();
 
 void initializeDeck(Card* deck) {
     char* colors[] = {"Red", "Yellow", "Green", "Blue"};
+    char* colorCodes[] = {ANSI_COLOR_RED, ANSI_COLOR_YELLOW, ANSI_COLOR_GREEN, ANSI_COLOR_BLUE};
     char* numbers[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Skip", "Reverse", "Draw Two", "Wild", "Wild Draw Four"};
     int i, j, k = 0, count;
 
@@ -53,6 +62,7 @@ void initializeDeck(Card* deck) {
             while (count--) {
                 strcpy(deck[k].color, colors[i]);
                 strcpy(deck[k].number, numbers[j]);
+                deck[k].colorCode = colorCodes[i];
                 k++;
             }
         }
@@ -63,6 +73,7 @@ void initializeDeck(Card* deck) {
         while (count--) {
             strcpy(deck[k].color, "Black");
             strcpy(deck[k].number, numbers[j]);
+            deck[k].colorCode = ANSI_COLOR_RESET; // Default to no color for Wild cards
             k++;
         }
     }
@@ -98,13 +109,13 @@ void dealInitialCards(Player* players, int numPlayers, Card* deck, int* deckInde
 
 void printHand(Player player, int isCurrentPlayer) {
     printf("%s's Hand (%d cards): ", player.name, player.hand_size);
-    if (isCurrentPlayer) {
+    if (player.isHuman) {
         for (int i = 0; i < player.hand_size; i++) {
-            printf("[%s %s] ", player.hand[i].color, player.hand[i].number);
+            printf("%s[%s %s]%s ", player.hand[i].colorCode, player.hand[i].color, player.hand[i].number, ANSI_COLOR_RESET);
         }
     } else {
         for (int i = 0; i < player.hand_size; i++) {
-            printf("[????] "); // Hide other players' cards
+            printf("[????] "); // Hide AI players' cards
         }
     }
     printf("\n");
@@ -142,7 +153,7 @@ int handleSpecialCard(Card* topCard, Player* players, int currentPlayer, int* di
     }
     if (strcmp(topCard->number, "Wild") == 0 || strcmp(topCard->number, "Wild Draw Four") == 0) {
         if (players[currentPlayer].isHuman) {
-            printf("Choose a color (Red, Yellow, Green, Blue): ");
+            printf("Choose a color (TYPE: Red, Yellow, Green, Blue): ");
             scanf("%9s", topCard->color);  // Use %9s to avoid buffer overflow
         } else {
             strcpy(topCard->color, "Red"); // Simple AI always chooses Red
@@ -163,13 +174,21 @@ void playGame(Player* players, int numPlayers, Card* deck) {
     while (!gameOver) {
         CLEAR_SCREEN;
         printf("Current Top Card: [%s %s]\n\n", topCard.color, topCard.number);
+
+        // Display all player names with an indication of the current player
         for (int i = 0; i < numPlayers; i++) {
-            printHand(players[i], i == currentPlayer);
+            if (i == currentPlayer) {
+                printf("-> %s's turn\n", players[i].name);
+            } else {
+                printf("   %s\n", players[i].name);
+            }
         }
+        printf("\n");
+
+        printHand(players[currentPlayer], 1);
 
         if (players[currentPlayer].isHuman) {
-            printf("Your turn, %s:\n", players[currentPlayer].name);
-            printHand(players[currentPlayer], 1);
+            printf("Your turn, %s:\n\n", players[currentPlayer].name);
 
             int played = 0;
             while (!played) {
@@ -181,7 +200,7 @@ void playGame(Player* players, int numPlayers, Card* deck) {
                     Card newCard = drawCard(deck, &deckIndex);
                     if (strcmp(newCard.color, "None") != 0) {  // Check if the deck is not empty
                         players[currentPlayer].hand[players[currentPlayer].hand_size++] = newCard;
-                        printf("Drew: [%s %s]\n", newCard.color, newCard.number);
+                        printf("\nDrew: [%s %s]\n", newCard.color, newCard.number);
                         if (canPlay(topCard, newCard)) {
                             printf("You can play the drawn card. Do you want to play it? (1 for yes, 0 for no): ");
                             int playDrawn;
@@ -211,7 +230,7 @@ void playGame(Player* players, int numPlayers, Card* deck) {
                     printf("Invalid choice. Please try again.\n");
                 }
             }
-        } else {  // AI turn
+        } else {  // AI turn logic remains unchanged
             int played = 0;
             for (int i = 0; i < players[currentPlayer].hand_size && !played; i++) {
                 if (canPlay(topCard, players[currentPlayer].hand[i])) {
@@ -250,6 +269,7 @@ void playGame(Player* players, int numPlayers, Card* deck) {
     }
 }
 
+
 void pressEnterToContinue() {
     printf("Press Enter to continue...\n");
     while (getchar() != '\n');  // Clear the input buffer
@@ -265,17 +285,18 @@ void showMainMenu() {
     printf("1 - Start Game\n");
     printf("2 - Instructions\n");
     printf("3 - Exit\n");
+    printf("=================\n");
 }
 
 void showInstructions() {
     CLEAR_SCREEN;
-    printf("=== INSTRUCTIONS ===\n");
+    printf("\n=== INSTRUCTIONS ===\n");
     printf("Welcome to UNO!\n");
     printf("Play cards matching the top card's color or number.\n");
     printf("Special cards change the game flow.\n");
-    printf("\n");
+    printf("\n\n");
     printf("Win Condition: The first player to empty their hand wins.\n");
-    printf("\n");
+    printf("\n\n");
     printf("Cards and their functions:\n");
     printf("- Number cards: Play a card with the same number or color as the top card.\n");
     printf("- Skip: Skips the next player's turn.\n");
@@ -283,25 +304,13 @@ void showInstructions() {
     printf("- Draw Two: Forces the next player to draw two cards and skip their turn.\n");
     printf("- Wild: Allows the player to choose the next color.\n");
     printf("- Wild Draw Four: Allows the player to choose the next color and forces the next player to draw four cards and skip their turn.\n");
-    printf("\n");
+    printf("================================================================================================================================\n");
+    printf("\n\n");
     printf("Press Enter to go back to the Main Menu...\n");
-    while (getchar() != '\n');  // Clear the input buffer
     getchar(); // Wait for Enter key
 }
 
 int main() {
-    // Display big centered welcome message
-    printf("==================================================\n");
-    printf("============== WELCOME TO UNO ====================\n");
-    printf("==================================================\n");
-    printf("\n");
-
-    // Prompt user to enter their name
-    printf("Enter your name: ");
-    char playerName[20];
-    scanf("%19s", playerName); // Limit input to 19 characters to avoid buffer overflow
-    printf("\n");
-
     Card deck[MAX_CARDS];
     Player players[MAX_PLAYERS];
     int numPlayers;
@@ -315,7 +324,10 @@ int main() {
         switch (choice) {
             case 1:
                 CLEAR_SCREEN;
-                printf("=== START GAME ===\n");
+                printf("==================================================\n");
+                printf("============== WELCOME TO UNO ====================\n");
+                printf("==================================================\n");
+                printf("\n");
                 printf("Enter the number of players (2 to 4): ");
                 scanf("%d", &numPlayers);
                 getchar();  // Consume newline character after number input
@@ -325,12 +337,7 @@ int main() {
                     break;
                 }
 
-                for (int i = 0; i < numPlayers; i++) {
-                    printf("Enter the name for Player %d: ", i + 1);
-                    scanf("%s", players[i].name);
-                }
-
-                initializePlayers(players, numPlayers);
+                initializePlayers(players, numPlayers); // Initializes players with default names
                 initializeDeck(deck);
                 playGame(players, numPlayers, deck);
                 break;
