@@ -281,6 +281,11 @@ void displayInstructions() {
 
 void showMainMenu() {
     CLEAR_SCREEN;
+        printf(" _   _     _   _     ___  \n");
+    printf("| | | |   | \\ | |   / _ \\ \n");
+    printf("| | | |   |  \\| |  | | | |\n");
+    printf("| |_| |   | |\\  |  | | | |\n");
+    printf(" \\___/    |_| \\_|   \\___/\n");
     printf("=== MAIN MENU ===\n");
     printf("1 - Start Game\n");
     printf("2 - Instructions\n");
