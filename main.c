@@ -32,13 +32,15 @@ void initializeDeck(Card* deck);
 void shuffleDeck(Card* deck);
 void initializePlayers(Player* players, int numPlayers);
 void dealInitialCards(Player* players, int numPlayers, Card* deck, int* deckIndex);
-void printHand(Player player);
+void printHand(Player player, int isCurrentPlayer);
 int canPlay(Card topCard, Card handCard);
 void playGame(Player* players, int numPlayers, Card* deck);
 void pressEnterToContinue();
 void displayInstructions();
 Card drawCard(Card* deck, int* deckIndex);
 int handleSpecialCard(Card* topCard, Player* players, int currentPlayer, int* direction, int numPlayers, Card* deck, int* deckIndex);
+void showMainMenu();
+void showInstructions();
 
 void initializeDeck(Card* deck) {
     char* colors[] = {"Red", "Yellow", "Green", "Blue"};
@@ -94,10 +96,16 @@ void dealInitialCards(Player* players, int numPlayers, Card* deck, int* deckInde
     }
 }
 
-void printHand(Player player) {
+void printHand(Player player, int isCurrentPlayer) {
     printf("%s's Hand (%d cards): ", player.name, player.hand_size);
-    for (int i = 0; i < player.hand_size; i++) {
-        printf("[%s %s] ", player.hand[i].color, player.hand[i].number);
+    if (isCurrentPlayer) {
+        for (int i = 0; i < player.hand_size; i++) {
+            printf("[%s %s] ", player.hand[i].color, player.hand[i].number);
+        }
+    } else {
+        for (int i = 0; i < player.hand_size; i++) {
+            printf("[????] "); // Hide other players' cards
+        }
     }
     printf("\n");
 }
@@ -156,12 +164,12 @@ void playGame(Player* players, int numPlayers, Card* deck) {
         CLEAR_SCREEN;
         printf("Current Top Card: [%s %s]\n\n", topCard.color, topCard.number);
         for (int i = 0; i < numPlayers; i++) {
-            printHand(players[i]);
+            printHand(players[i], i == currentPlayer);
         }
 
         if (players[currentPlayer].isHuman) {
             printf("Your turn, %s:\n", players[currentPlayer].name);
-            printHand(players[currentPlayer]);
+            printHand(players[currentPlayer], 1);
 
             int played = 0;
             while (!played) {
@@ -251,24 +259,92 @@ void displayInstructions() {
     printf("Welcome to UNO! Play cards matching the top card's color or number. Special cards change the game flow.\n");
 }
 
+void showMainMenu() {
+    CLEAR_SCREEN;
+    printf("=== MAIN MENU ===\n");
+    printf("1 - Start Game\n");
+    printf("2 - Instructions\n");
+    printf("3 - Exit\n");
+}
+
+void showInstructions() {
+    CLEAR_SCREEN;
+    printf("=== INSTRUCTIONS ===\n");
+    printf("Welcome to UNO!\n");
+    printf("Play cards matching the top card's color or number.\n");
+    printf("Special cards change the game flow.\n");
+    printf("\n");
+    printf("Win Condition: The first player to empty their hand wins.\n");
+    printf("\n");
+    printf("Cards and their functions:\n");
+    printf("- Number cards: Play a card with the same number or color as the top card.\n");
+    printf("- Skip: Skips the next player's turn.\n");
+    printf("- Reverse: Reverses the direction of play.\n");
+    printf("- Draw Two: Forces the next player to draw two cards and skip their turn.\n");
+    printf("- Wild: Allows the player to choose the next color.\n");
+    printf("- Wild Draw Four: Allows the player to choose the next color and forces the next player to draw four cards and skip their turn.\n");
+    printf("\n");
+    printf("Press Enter to go back to the Main Menu...\n");
+    while (getchar() != '\n');  // Clear the input buffer
+    getchar(); // Wait for Enter key
+}
+
 int main() {
+    // Display big centered welcome message
+    printf("==================================================\n");
+    printf("============== WELCOME TO UNO ====================\n");
+    printf("==================================================\n");
+    printf("\n");
+
+    // Prompt user to enter their name
+    printf("Enter your name: ");
+    char playerName[20];
+    scanf("%19s", playerName); // Limit input to 19 characters to avoid buffer overflow
+    printf("\n");
+
     Card deck[MAX_CARDS];
     Player players[MAX_PLAYERS];
     int numPlayers;
+    int choice;
 
-    printf("=== WELCOME TO UNO ===\n");
-    printf("Enter the number of players (2 to 4): ");
-    scanf("%d", &numPlayers);
-    getchar();  // Consume newline character after number input
+    do {
+        showMainMenu();
+        scanf("%d", &choice);
+        getchar(); // Consume newline character after choice input
 
-    if (numPlayers < 2 || numPlayers > 4) {
-        printf("Invalid number of players. Game supports 2 to 4 players only.\n");
-        return 0;
-    }
+        switch (choice) {
+            case 1:
+                CLEAR_SCREEN;
+                printf("=== START GAME ===\n");
+                printf("Enter the number of players (2 to 4): ");
+                scanf("%d", &numPlayers);
+                getchar();  // Consume newline character after number input
 
-    initializePlayers(players, numPlayers);
-    initializeDeck(deck);
-    displayInstructions();
-    playGame(players, numPlayers, deck);
+                if (numPlayers < 2 || numPlayers > 4) {
+                    printf("Invalid number of players. Game supports 2 to 4 players only.\n");
+                    break;
+                }
+
+                for (int i = 0; i < numPlayers; i++) {
+                    printf("Enter the name for Player %d: ", i + 1);
+                    scanf("%s", players[i].name);
+                }
+
+                initializePlayers(players, numPlayers);
+                initializeDeck(deck);
+                playGame(players, numPlayers, deck);
+                break;
+            case 2:
+                showInstructions();
+                break;
+            case 3:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+                break;
+        }
+    } while (choice != 1 && choice != 3); // Continue showing Main Menu until Start Game or Exit is chosen
+
     return 0;
 }
