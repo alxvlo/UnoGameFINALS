@@ -323,13 +323,64 @@ void displayInstructions() {
 
 void showMainMenu() {
     CLEAR_SCREEN;
-    printf("\n");
-    printf("      WELCOME TO UNO\n\n");
-    printf("======== MAIN MENU ========\n");
-    printf("1 - Start Game\n");
-    printf("2 - Instructions\n");
-    printf("3 - Exit\n");
-    printf("===========================\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWNXK0kxdolcc::;;;;;;;;:::clloxk0KXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWXK0kkxdolc::;;;;;;;;;;;;;;;;;;;;;;;;::clodkO0XNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNK0kdoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cldkKNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWX0kdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ldk0K0Okdollcclllodk0XWMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWX0xoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ok0K0dl:::cclodddddolcc:::lxKWMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWX0xoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lx0XOo;;:ox0KXXXKKKKKKKXXXKOxl:;:dKWMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKkdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:oOXKd;,cx0XXKKKKKKKKKKKKKKKKKKKXKOd:,cOWMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKkoc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:loxdc;;;;:d0XOc.'l0XKKKKKKKKKKKKKKKKKKKKKKKKKKXKkc,c0WMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKko:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:codk000OOXKl;:o0XOc..c0XKKKKKKKKKKXXXKKKKKXXKKKKKKKKKKKXO:'oXMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXko:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:coxk0K0kdl::,.oN0dkX0l. .xXKKKKKKKKKX0koc;,''',:lx0XKKKKKKKKKXKd':0MMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWN0dc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:cd0K0xoc:::cok00:.xWWXd.  'kXKKKKKKKKKkc.            .:kKXKKKKKKKKXk,,OMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXko:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:d0XXk:. 'dO0KXXKKXO,,0Kc.  .xXKKKKKKKX0c.             ....;kXKKKKKKKKXO,,0MMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKxc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:o0XOo:....'OXKKKKKKKXx.''    lXKKKKKKKXO,  .....      ..,;,'..oKXKKKKKKKXk':XMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKxc;;;;;;;;;;;;;;;;;;;:cldkOOko:;;;;;:kXO:...',,'.;0XKKKKKKKXo.    'OXKKKKKKXK:.,dO000Okdc. .',;;;;'..oKKKKKKKKKXo.dWM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKdc;;;;;;;;;;;;;;;;:loxk0K0OxlokKKkoc;;:kNd..',;;;,..lXXKKKKKKXK:    :KXKKKKKKXk.;KXxlccldk0Kd,..,;,'.  .dXKKKKKKKX0,,KM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMWKxc;;;;;;;;;;;;;:loxOKK0koc:::clc;;lkKKkocl0Xc...,;;,. .xXKKKKKKKXO,   cXKKKKKKKNx.lNO:;;;;;;:dKKl....  .. ,0XKKKKKKKXl.kM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMWXkc;;;;;;;;;;cldkO00Oxl:,,:ldk0KXXXKkl;;ckKKO0N0, .',.    'OXKKKKKKKXx.  cXKKKKKKKNk.:X0c;;;;;;;;cOXd.  .',. .xXKKKKKKKXd.dW\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMN0o:;;;;;;:lxk00Okdc:;;;.  :KNKKKKKKKKKXKkl;;cxXWWk:.    .,. :KXKKKKKKKXo. :KXKKKKKKXK:'OXd;;;;;;;;;cOXo..''.  .dXKKKKKKKXd.oW\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMWXx:;;;;;;:d0Kkoc;;:coxOKXd. .dXKKKKKKKKKKKKXKkl:;cxKKo. .,'.   lXXKKKKKKXKc .ONKKKKKKKXk':KKo;;;;;;;;;lKK;      .xXKKKKKKKXo.dM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMN0l;;;;;;cd0Kx,. 'x0KXXKKKXKc  .kXKKKKKKKKKKKKKKXKOo:;;,. ..     .xXKKKKKKKX0, lXXKKKKKKKXd.cKKo:;;;;;;;:kNo      ;0XKKKKKKXK:'OM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMW0l;;;;;:d0Kx,..'..dXKKKKKKKX0;  ;0XKKKKKKKKKKKKKKKKXKOxo;.        'OXKKKKKKKXk..kXKKKKKKKKXd';OXkl:;;;;;:kWd.    ,OXKKKKKKKXk'cNM\n");
+    printf("MMMMMMMMMMMMMMMMMWX0KXx:;;;ckNO;..,,;'.'kXKKKKKKKXk.  cKXKKKKKKKKKKKKKKKKKKKXKOo;.      :KXKKKKKKKXo.,OXKKKKKKKKXO:'cOK0xdoooxXK:   .cOXKKKKKKKXK:'OMM\n");
+    printf("MMMMMMMMMMMMWXOdl:;.,OXd;;;:kNO'.';;;,'.;0XKKKKKKKXd. .dXKKKKKKKKXNXKKKKKKKKKKKXKOo;.    lXXKKKKKKXKc ,OXKKKKKKKKXKkc,;ldkOOOko,  'ckKKKKKKKKKXKl.dWMM\n");
+    printf("MMMMMMMNKkoc:;:coxOd.;0Kl;;;c0Nd..,;;'.  lKXKKKKKKXKc  .kXKKKKKKKXN0OKXKKKKKKKKKKKXXOd;. .xXKKKKKKKX0, .xXXKKKKKKKKKX0xlc::::::cok0KKKKKKKKKKXKc'dNMMM\n");
+    printf("MMMMMNx;..;dk0KXXKKXo.cXOc;;;oKXl..'.  ...dXKKKKKKKX0;  ;0XKKKKKKKXx',lOKXKKKKKKKKKKKXX0d:c0XKKKKKKKXk. .c0XKKKKKKKKKKKXXXKKKKXXKKKKKKKKKKKKXk;'xNMMMM\n");
+    printf("MMMNx,    oXXKKKKKKXK:.dXx:;;;dXK;   ..,. 'kXKKKKKKKXk.  cKXKKKKKKKKl  .,ok0KXKKKKKKKKKKXXKXNXKKKKKKKXd.  .o0XKKKKKKKKKKKKKKKKKKKKKKKKKKKXXOc.;OWMMMMM\n");
+    printf("MNk,      .xXKKKKKKKXO,'OXd;;;:kNO. .,'.   ;0XKKKKKKKXd. .dXKKKKKKKX0;    ..,lkKXKKKKKKKKKKKXXKKKKKKKXKc    .ckKXKKKKKKKKKKKKKKKKKKKKKXXKx:..oXMMMMMMM\n");
+    printf("MK;        'OXKKKKKKKXx.;KKl;;;c0Nd...      lKXKKKKKKXKl  .kXKKKKKKKXO'       .,lkKXKKKKKKKKKKKKKKKKKKX0,      'lx0XXXXKKKKKKKKKKXXXKOd:. .:OWMMMMMMMM\n");
+    printf("MWk.        :KXKKKKKKKXo.cXOc;;;oKXl        .dXKKKKKKKX0;  ;0XKKKKKKKXd.         .,lkKXKKKKKKKKKKKKKKKKXk.        .,cldkOO0000Okxol:'.  .;kNMMMMMMMMMM\n");
+    printf("MMWo.       .oXKKKKKKKXK:.dXx:;;;dNK;        'kXKKKKKKKXk'  cKXKKKKKKXXl            .,lkKXKKKKKKKKKKKKKKXd.              ......       .cONMMMMMMMMMMMM\n");
+    printf("MMMXc        .xXKKKKKKKX0,'kXd;;;:kNO.        ;0XKKKKKKKXd. .dXKKKKKKKX0:              .'lkKXKKKKKKKKKKKXKc                        .:xKWMMMMMMMMMMMMMM\n");
+    printf("MMMM0,        ,OXKKKKKKKXx.;K0l;;;c0Nd.        lKXKKKKKKXK:  .kXKKKKKKKXO'                 'lkKXKKKKKKKKKX0;                  .':okXWMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMWk.        :KXKKKKKKKXo.cXOc;;;oKXl        .dXKKKKKKKXk.  ;0XKKKKKKKXx. 'c,.              'lkKXKKXXK0kd, ,xxoc:;;,,,;:cldk0XWMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMWo.    .'..oXKKKKKKKXKc.dXx:;;;dXK;        ;0XKKKKKKXK:   lKXKKKKKKKXl..dX0o,.              'lxdl:,.  .:OX0OO00000000OkxxONMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMX:  .',;,..xXKKKKKKKX0,'OXd;;;:kNO.       .kXKKKKKKKXo   .dXKKKKKKKX0k:'OWWXOo,.                   .:kKOo:;;::::::::;;ckXWMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMM0,.';;;;'.,OXKKKKKKKXx.;0Ko;;;c0Nd.      'OXKKKKKKKXd.   .kXKKKKKKKXNO,;KNkx0KOo;.              .:kXOo:;;;;;;;;;;;;:dKWMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMWk..,;;,.  :KXKKKKKKKXd.;0Kd:;;oXX;      lXKKKKKKKKXo     ;0XKKKKKKKXXx.lX0l:lx0KOo;.     .';ldO0KOo:;;;;;;;;;;;;:oONMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMWo..,..  ..oKKKKKKKKKXx,,d00xdxKNl    .oKXKKKKKKKX0;      lXXKKKKXXXXO;.dNOc;;:lx0KOo:cokO00Okdlc;;;;;;;;;;;;;;lOXWMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMX:    .,'..dXKKKKKKKKX0o,,codxxo'  'cOXKKKKKKKKKXo.      .dXXKOxo:;,. .dN0l;;;;;:lxO00kxoc:;;;;;;;;;;;;;;;;:lkXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMM0, .',.   .dXKKKKKKKKKXKkocc::cldk0XKKKKKKKKKKXd.        .:;'.     .l0Kkl;;;;;;;;;;:;;;;;;;;;;;;;;;;;;;;:lkXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMWk...      .oKXKKKKKKKKKKXXXXXXXKKKKKKKKKKKKX0c',.              .;l0Kkl;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:oOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMWd.         ;kKKKKKKKKKKKKKKKKKKKKKKKKKKXXOl,;kXd.        .';lx0NKkl;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cd0NWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMNo.         .cOKXKKKKKKKKKKKKKKKKKKKXX0d:',xXXXXc   .':ox0K0Okdoc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:lkKWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMNd.          .;oOKXXKKKKKKKKKKXXKOxl;..,dKKxcoKKdok0K0Oxol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cd0NWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMWO,            .':ldxkkkkkxdoc;'.   ,xKKxc;;;okOkdoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cdOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMXo.                            .;xXKdc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ldOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMWKo'                       .;oOKOdc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cox0XWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMNOl,.              .';lx0KOxl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;coxOKNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMWKOxoc:::::clodkO00Oxoc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:coxOKNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMWNK00OOkkxdoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:coxk0XWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKOxoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ccldkOKXWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNX0kxdlcc:;;;;;;;;;;;;;;;;;;;;;::cclodxO0KXXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWNK0kxdolcc::::;::::cclodxkO0KXNWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("\n\n================================================================ MAIN MENU ===========================================================================\n");
+    printf("                                                            1 - Start Game\n");
+    printf("                                                            2 - Instructions\n");
+    printf("                                                            3 - Exit\n");
+    printf("======================================================================================================================================================\n");
 }
 
 void showInstructions() {
@@ -360,41 +411,48 @@ int main() {
     int numPlayers;
     int choice;
 
-    while (1) { // Loop indefinitely until the user decides to exit
+    do {
         showMainMenu();
         scanf("%d", &choice);
         getchar(); // Consume newline character after choice input
 
         switch (choice) {
             case 1:
-                CLEAR_SCREEN;
-                printf("==================================================\n");
-                printf("============== WELCOME TO UNO ====================\n");
-                printf("==================================================\n");
-                printf("\n");
-                printf("Enter the number of players (2 to 4): ");
-                scanf("%d", &numPlayers);
-                getchar();  // Consume newline character after number input
+                do {
+                    CLEAR_SCREEN;
+                    printf("==================================================\n");
+                    printf("================== WELCOME TO UNO ================\n");
+                    printf("==================================================\n");
+                    printf("\n");
+                    printf("Enter the number of players (2 to 4): ");
+                    scanf("%d", &numPlayers);
+                    getchar();  // Consume newline character after number input
 
-                if (numPlayers < 2 || numPlayers > 4) {
-                    printf("Invalid number of players. Game supports 2 to 4 players only.\n");
-                } else {
+                    if (numPlayers < 2 || numPlayers > 4) {
+                        printf("Invalid number of players. Game supports 2 to 4 players only.\n");
+                        break;
+                    }
+
                     initializePlayers(players, numPlayers); // Initializes players with default names
                     initializeDeck(deck);
                     playGame(players, numPlayers, deck);
-                }
+
+                    printf("Do you want to play again? (1 for yes, 0 for no): ");
+                    scanf("%d", &choice);
+                    getchar(); // Consume newline character after choice input
+                } while (choice == 1);
                 break;
             case 2:
                 showInstructions();
                 break;
             case 3:
                 printf("Exiting...\n");
-                return 0; // Exit the program
+                break;
             default:
                 printf("Invalid choice. Please try again.\n");
                 break;
         }
-    }
+    } while (choice != 3); // Continue showing Main Menu until Exit is chosen
 
     return 0;
 }
