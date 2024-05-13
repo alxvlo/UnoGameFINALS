@@ -49,6 +49,7 @@ Card drawCard(Card* deck, int* deckIndex);
 int handleSpecialCard(Card* topCard, Player* players, int currentPlayer, int* direction, int numPlayers, Card* deck, int* deckIndex);
 void showMainMenu();
 void showInstructions();
+void checkUnoCall(Player player);
 
 void initializeDeck(Card* deck) {
     char* colors[] = {"Red", "Yellow", "Green", "Blue"};
@@ -120,7 +121,6 @@ void printHand(Player player, int isCurrentPlayer) {
     }
     printf("\n");
 }
-
 
 int canPlay(Card topCard, Card handCard) {
     return (strcmp(topCard.color, handCard.color) == 0 || strcmp(topCard.number, handCard.number) == 0 ||
@@ -254,6 +254,10 @@ void playGame(Player* players, int numPlayers, Card* deck) {
                         }
                         players[currentPlayer].hand_size--;
                         played = 1;
+                        // Check if the player has only one card left and needs to say "uno"
+                        if (players[currentPlayer].hand_size == 1) {
+                            checkUnoCall(players[currentPlayer]);
+                        }
                     } else {
                         printf("Cannot play that card. Please try again.\n");
                     }
@@ -272,6 +276,10 @@ void playGame(Player* players, int numPlayers, Card* deck) {
                     }
                     players[currentPlayer].hand_size--;
                     played = 1;
+                    // Check if the AI player has only one card left and needs to say "uno"
+                    if (players[currentPlayer].hand_size == 1) {
+                        checkUnoCall(players[currentPlayer]);  // AI automatically succeeds, but could add logic for errors
+                    }
                 }
             }
             if (!played) {
@@ -352,6 +360,19 @@ void showInstructions() {
     getchar(); // Wait for Enter key
 }
 
+void checkUnoCall(Player player) {
+    if (player.isHuman) {
+        char buffer[10];
+        printf("You have one card left! Type 'uno' to continue: ");
+        scanf("%s", buffer);
+        if (strcmp(buffer, "uno") != 0) {
+            printf("Warning: You forgot to say 'uno'! You must say 'uno' when you are down to one card.\n");
+        }
+    } else {
+        printf("AI Player %s says 'uno'!\n", player.name); // Simulate AI correctly declaring "uno"
+    }
+}
+
 int main() {
     Card deck[MAX_CARDS];
     Player players[MAX_PLAYERS];
@@ -368,7 +389,7 @@ int main() {
                 do {
                     CLEAR_SCREEN;
                     printf("==================================================\n");
-                    printf("============== WELCOME TO UNO ====================\n");
+                    printf("================== WELCOME TO UNO ================\n");
                     printf("==================================================\n");
                     printf("\n");
                     printf("Enter the number of players (2 to 4): ");
