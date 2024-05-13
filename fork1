@@ -358,7 +358,7 @@ int main() {
     int numPlayers;
     int choice;
 
-    do {
+    while (1) { // Loop indefinitely until the user decides to exit
         showMainMenu();
         scanf("%d", &choice);
         getchar(); // Consume newline character after choice input
@@ -376,24 +376,23 @@ int main() {
 
                 if (numPlayers < 2 || numPlayers > 4) {
                     printf("Invalid number of players. Game supports 2 to 4 players only.\n");
-                    break;
+                } else {
+                    initializePlayers(players, numPlayers); // Initializes players with default names
+                    initializeDeck(deck);
+                    playGame(players, numPlayers, deck);
                 }
-
-                initializePlayers(players, numPlayers); // Initializes players with default names
-                initializeDeck(deck);
-                playGame(players, numPlayers, deck);
                 break;
             case 2:
                 showInstructions();
                 break;
             case 3:
                 printf("Exiting...\n");
-                break;
+                return 0; // Exit the program
             default:
                 printf("Invalid choice. Please try again.\n");
                 break;
         }
-    } while (choice != 1 && choice != 3); // Continue showing Main Menu until Start Game or Exit is chosen
+    }
 
     return 0;
 }
