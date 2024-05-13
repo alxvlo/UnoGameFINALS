@@ -365,23 +365,29 @@ int main() {
 
         switch (choice) {
             case 1:
-                CLEAR_SCREEN;
-                printf("==================================================\n");
-                printf("============== WELCOME TO UNO ====================\n");
-                printf("==================================================\n");
-                printf("\n");
-                printf("Enter the number of players (2 to 4): ");
-                scanf("%d", &numPlayers);
-                getchar();  // Consume newline character after number input
+                do {
+                    CLEAR_SCREEN;
+                    printf("==================================================\n");
+                    printf("============== WELCOME TO UNO ====================\n");
+                    printf("==================================================\n");
+                    printf("\n");
+                    printf("Enter the number of players (2 to 4): ");
+                    scanf("%d", &numPlayers);
+                    getchar();  // Consume newline character after number input
 
-                if (numPlayers < 2 || numPlayers > 4) {
-                    printf("Invalid number of players. Game supports 2 to 4 players only.\n");
-                    break;
-                }
+                    if (numPlayers < 2 || numPlayers > 4) {
+                        printf("Invalid number of players. Game supports 2 to 4 players only.\n");
+                        break;
+                    }
 
-                initializePlayers(players, numPlayers); // Initializes players with default names
-                initializeDeck(deck);
-                playGame(players, numPlayers, deck);
+                    initializePlayers(players, numPlayers); // Initializes players with default names
+                    initializeDeck(deck);
+                    playGame(players, numPlayers, deck);
+
+                    printf("Do you want to play again? (1 for yes, 0 for no): ");
+                    scanf("%d", &choice);
+                    getchar(); // Consume newline character after choice input
+                } while (choice == 1);
                 break;
             case 2:
                 showInstructions();
@@ -393,7 +399,7 @@ int main() {
                 printf("Invalid choice. Please try again.\n");
                 break;
         }
-    } while (choice != 1 && choice != 3); // Continue showing Main Menu until Start Game or Exit is chosen
+    } while (choice != 3); // Continue showing Main Menu until Exit is chosen
 
     return 0;
 }
