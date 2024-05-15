@@ -49,7 +49,6 @@ Card drawCard(Card* deck, int* deckIndex);
 int handleSpecialCard(Card* topCard, Player* players, int currentPlayer, int* direction, int numPlayers, Card* deck, int* deckIndex);
 void showMainMenu();
 void showInstructions();
-void checkUnoCall(Player player);
 
 void initializeDeck(Card* deck) {
     char* colors[] = {"Red", "Yellow", "Green", "Blue"};
@@ -121,6 +120,7 @@ void printHand(Player player, int isCurrentPlayer) {
     }
     printf("\n");
 }
+
 
 int canPlay(Card topCard, Card handCard) {
     return (strcmp(topCard.color, handCard.color) == 0 || strcmp(topCard.number, handCard.number) == 0 ||
@@ -254,10 +254,6 @@ void playGame(Player* players, int numPlayers, Card* deck) {
                         }
                         players[currentPlayer].hand_size--;
                         played = 1;
-                        // Check if the player has only one card left and needs to say "uno"
-                        if (players[currentPlayer].hand_size == 1) {
-                            checkUnoCall(players[currentPlayer]);
-                        }
                     } else {
                         printf("Cannot play that card. Please try again.\n");
                     }
@@ -276,10 +272,6 @@ void playGame(Player* players, int numPlayers, Card* deck) {
                     }
                     players[currentPlayer].hand_size--;
                     played = 1;
-                    // Check if the AI player has only one card left and needs to say "uno"
-                    if (players[currentPlayer].hand_size == 1) {
-                        checkUnoCall(players[currentPlayer]);  // AI automatically succeeds, but could add logic for errors
-                    }
                 }
             }
             if (!played) {
@@ -331,11 +323,64 @@ void displayInstructions() {
 
 void showMainMenu() {
     CLEAR_SCREEN;
-    printf("=== MAIN MENU ===\n");
-    printf("1 - Start Game\n");
-    printf("2 - Instructions\n");
-    printf("3 - Exit\n");
-    printf("=================\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWNXK0kxdolcc::;;;;;;;;:::clloxk0KXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWXK0kkxdolc::;;;;;;;;;;;;;;;;;;;;;;;;::clodkO0XNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNK0kdoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cldkKNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWX0kdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ldk0K0Okdollcclllodk0XWMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWX0xoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ok0K0dl:::cclodddddolcc:::lxKWMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWX0xoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lx0XOo;;:ox0KXXXKKKKKKKXXXKOxl:;:dKWMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKkdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:oOXKd;,cx0XXKKKKKKKKKKKKKKKKKKKXKOd:,cOWMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKkoc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:loxdc;;;;:d0XOc.'l0XKKKKKKKKKKKKKKKKKKKKKKKKKKXKkc,c0WMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKko:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:codk000OOXKl;:o0XOc..c0XKKKKKKKKKKXXXKKKKKXXKKKKKKKKKKKXO:'oXMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXko:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:coxk0K0kdl::,.oN0dkX0l. .xXKKKKKKKKKX0koc;,''',:lx0XKKKKKKKKKXKd':0MMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWN0dc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:cd0K0xoc:::cok00:.xWWXd.  'kXKKKKKKKKKkc.            .:kKXKKKKKKKKXk,,OMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXko:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:d0XXk:. 'dO0KXXKKXO,,0Kc.  .xXKKKKKKKX0c.             ....;kXKKKKKKKKXO,,0MMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKxc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:o0XOo:....'OXKKKKKKKXx.''    lXKKKKKKKXO,  .....      ..,;,'..oKXKKKKKKKXk':XMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKxc;;;;;;;;;;;;;;;;;;;:cldkOOko:;;;;;:kXO:...',,'.;0XKKKKKKKXo.    'OXKKKKKKXK:.,dO000Okdc. .',;;;;'..oKKKKKKKKKXo.dWM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKdc;;;;;;;;;;;;;;;;:loxk0K0OxlokKKkoc;;:kNd..',;;;,..lXXKKKKKKXK:    :KXKKKKKKXk.;KXxlccldk0Kd,..,;,'.  .dXKKKKKKKX0,,KM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMWKxc;;;;;;;;;;;;;:loxOKK0koc:::clc;;lkKKkocl0Xc...,;;,. .xXKKKKKKKXO,   cXKKKKKKKNx.lNO:;;;;;;:dKKl....  .. ,0XKKKKKKKXl.kM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMWXkc;;;;;;;;;;cldkO00Oxl:,,:ldk0KXXXKkl;;ckKKO0N0, .',.    'OXKKKKKKKXx.  cXKKKKKKKNk.:X0c;;;;;;;;cOXd.  .',. .xXKKKKKKKXd.dW\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMN0o:;;;;;;:lxk00Okdc:;;;.  :KNKKKKKKKKKXKkl;;cxXWWk:.    .,. :KXKKKKKKKXo. :KXKKKKKKXK:'OXd;;;;;;;;;cOXo..''.  .dXKKKKKKKXd.oW\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMWXx:;;;;;;:d0Kkoc;;:coxOKXd. .dXKKKKKKKKKKKKXKkl:;cxKKo. .,'.   lXXKKKKKKXKc .ONKKKKKKKXk':KKo;;;;;;;;;lKK;      .xXKKKKKKKXo.dM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMN0l;;;;;;cd0Kx,. 'x0KXXKKKXKc  .kXKKKKKKKKKKKKKKXKOo:;;,. ..     .xXKKKKKKKX0, lXXKKKKKKKXd.cKKo:;;;;;;;:kNo      ;0XKKKKKKXK:'OM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMW0l;;;;;:d0Kx,..'..dXKKKKKKKX0;  ;0XKKKKKKKKKKKKKKKKXKOxo;.        'OXKKKKKKKXk..kXKKKKKKKKXd';OXkl:;;;;;:kWd.    ,OXKKKKKKKXk'cNM\n");
+    printf("MMMMMMMMMMMMMMMMMWX0KXx:;;;ckNO;..,,;'.'kXKKKKKKKXk.  cKXKKKKKKKKKKKKKKKKKKKXKOo;.      :KXKKKKKKKXo.,OXKKKKKKKKXO:'cOK0xdoooxXK:   .cOXKKKKKKKXK:'OMM\n");
+    printf("MMMMMMMMMMMMWXOdl:;.,OXd;;;:kNO'.';;;,'.;0XKKKKKKKXd. .dXKKKKKKKKXNXKKKKKKKKKKKXKOo;.    lXXKKKKKKXKc ,OXKKKKKKKKXKkc,;ldkOOOko,  'ckKKKKKKKKKXKl.dWMM\n");
+    printf("MMMMMMMNKkoc:;:coxOd.;0Kl;;;c0Nd..,;;'.  lKXKKKKKKXKc  .kXKKKKKKKXN0OKXKKKKKKKKKKKXXOd;. .xXKKKKKKKX0, .xXXKKKKKKKKKX0xlc::::::cok0KKKKKKKKKKXKc'dNMMM\n");
+    printf("MMMMMNx;..;dk0KXXKKXo.cXOc;;;oKXl..'.  ...dXKKKKKKKX0;  ;0XKKKKKKKXx',lOKXKKKKKKKKKKKXX0d:c0XKKKKKKKXk. .c0XKKKKKKKKKKKXXXKKKKXXKKKKKKKKKKKKXk;'xNMMMM\n");
+    printf("MMMNx,    oXXKKKKKKXK:.dXx:;;;dXK;   ..,. 'kXKKKKKKKXk.  cKXKKKKKKKKl  .,ok0KXKKKKKKKKKKXXKXNXKKKKKKKXd.  .o0XKKKKKKKKKKKKKKKKKKKKKKKKKKKXXOc.;OWMMMMM\n");
+    printf("MNk,      .xXKKKKKKKXO,'OXd;;;:kNO. .,'.   ;0XKKKKKKKXd. .dXKKKKKKKX0;    ..,lkKXKKKKKKKKKKKXXKKKKKKKXKc    .ckKXKKKKKKKKKKKKKKKKKKKKKXXKx:..oXMMMMMMM\n");
+    printf("MK;        'OXKKKKKKKXx.;KKl;;;c0Nd...      lKXKKKKKKXKl  .kXKKKKKKKXO'       .,lkKXKKKKKKKKKKKKKKKKKKX0,      'lx0XXXXKKKKKKKKKKXXXKOd:. .:OWMMMMMMMM\n");
+    printf("MWk.        :KXKKKKKKKXo.cXOc;;;oKXl        .dXKKKKKKKX0;  ;0XKKKKKKKXd.         .,lkKXKKKKKKKKKKKKKKKKXk.        .,cldkOO0000Okxol:'.  .;kNMMMMMMMMMM\n");
+    printf("MMWo.       .oXKKKKKKKXK:.dXx:;;;dNK;        'kXKKKKKKKXk'  cKXKKKKKKXXl            .,lkKXKKKKKKKKKKKKKKXd.              ......       .cONMMMMMMMMMMMM\n");
+    printf("MMMXc        .xXKKKKKKKX0,'kXd;;;:kNO.        ;0XKKKKKKKXd. .dXKKKKKKKX0:              .'lkKXKKKKKKKKKKKXKc                        .:xKWMMMMMMMMMMMMMM\n");
+    printf("MMMM0,        ,OXKKKKKKKXx.;K0l;;;c0Nd.        lKXKKKKKKXK:  .kXKKKKKKKXO'                 'lkKXKKKKKKKKKX0;                  .':okXWMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMWk.        :KXKKKKKKKXo.cXOc;;;oKXl        .dXKKKKKKKXk.  ;0XKKKKKKKXx. 'c,.              'lkKXKKXXK0kd, ,xxoc:;;,,,;:cldk0XWMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMWo.    .'..oXKKKKKKKXKc.dXx:;;;dXK;        ;0XKKKKKKXK:   lKXKKKKKKKXl..dX0o,.              'lxdl:,.  .:OX0OO00000000OkxxONMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMX:  .',;,..xXKKKKKKKX0,'OXd;;;:kNO.       .kXKKKKKKKXo   .dXKKKKKKKX0k:'OWWXOo,.                   .:kKOo:;;::::::::;;ckXWMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMM0,.';;;;'.,OXKKKKKKKXx.;0Ko;;;c0Nd.      'OXKKKKKKKXd.   .kXKKKKKKKXNO,;KNkx0KOo;.              .:kXOo:;;;;;;;;;;;;:dKWMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMWk..,;;,.  :KXKKKKKKKXd.;0Kd:;;oXX;      lXKKKKKKKKXo     ;0XKKKKKKKXXx.lX0l:lx0KOo;.     .';ldO0KOo:;;;;;;;;;;;;:oONMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMWo..,..  ..oKKKKKKKKKXx,,d00xdxKNl    .oKXKKKKKKKX0;      lXXKKKKXXXXO;.dNOc;;:lx0KOo:cokO00Okdlc;;;;;;;;;;;;;;lOXWMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMX:    .,'..dXKKKKKKKKX0o,,codxxo'  'cOXKKKKKKKKKXo.      .dXXKOxo:;,. .dN0l;;;;;:lxO00kxoc:;;;;;;;;;;;;;;;;:lkXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMM0, .',.   .dXKKKKKKKKKXKkocc::cldk0XKKKKKKKKKKXd.        .:;'.     .l0Kkl;;;;;;;;;;:;;;;;;;;;;;;;;;;;;;;:lkXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMWk...      .oKXKKKKKKKKKKXXXXXXXKKKKKKKKKKKKX0c',.              .;l0Kkl;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:oOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMWd.         ;kKKKKKKKKKKKKKKKKKKKKKKKKKKXXOl,;kXd.        .';lx0NKkl;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cd0NWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMNo.         .cOKXKKKKKKKKKKKKKKKKKKKXX0d:',xXXXXc   .':ox0K0Okdoc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:lkKWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMNd.          .;oOKXXKKKKKKKKKKXXKOxl;..,dKKxcoKKdok0K0Oxol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cd0NWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMWO,            .':ldxkkkkkxdoc;'.   ,xKKxc;;;okOkdoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cdOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMXo.                            .;xXKdc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ldOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMWKo'                       .;oOKOdc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cox0XWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMNOl,.              .';lx0KOxl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;coxOKNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMWKOxoc:::::clodkO00Oxoc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:coxOKNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMWNK00OOkkxdoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:coxk0XWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMWNKOxoc:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:ccldkOKXWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNX0kxdlcc:;;;;;;;;;;;;;;;;;;;;;::cclodxO0KXXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWNK0kxdolcc::::;::::cclodxkO0KXNWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+    printf("\n\n================================================================ MAIN MENU ===========================================================================\n");
+    printf("                                                            1 - Start Game\n");
+    printf("                                                            2 - Instructions\n");
+    printf("                                                            3 - Exit\n");
+    printf("======================================================================================================================================================\n");
 }
 
 void showInstructions() {
@@ -358,19 +403,6 @@ void showInstructions() {
     printf("\n\n");
     printf("Press Enter to go back to the Main Menu...\n");
     getchar(); // Wait for Enter key
-}
-
-void checkUnoCall(Player player) {
-    if (player.isHuman) {
-        char buffer[10];
-        printf("You have one card left! Type 'uno' to continue: ");
-        scanf("%s", buffer);
-        if (strcmp(buffer, "uno") != 0) {
-            printf("Warning: You forgot to say 'uno'! You must say 'uno' when you are down to one card.\n");
-        }
-    } else {
-        printf("AI Player %s says 'uno'!\n", player.name); // Simulate AI correctly declaring "uno"
-    }
 }
 
 int main() {
